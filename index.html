@@ -159,6 +159,12 @@
 
             <button type="submit" class="btn" id="submitBtn">ส่งคำขอใช้งาน</button>
         </form>
+
+        <div style="text-align: center; margin-top: 20px; border-top: 1px solid #eee; padding-top: 15px;">
+            <a href="javascript:void(0)" onclick="openForgotPass()" style="color: #666; font-size: 0.9rem; text-decoration: none; border-bottom: 1px dashed #ccc;">
+                ลืมรหัสผ่าน หรือจำชื่อผู้ใช้งานไม่ได้?
+            </a>
+        </div>
     </div>
 
     <div class="footer">
@@ -174,7 +180,6 @@
         form.addEventListener('submit', e => {
             e.preventDefault(); 
             
-            // แสดงหน้าจอ Loading แบบสวยๆ
             Swal.fire({
                 title: 'กำลังส่งคำขอ...',
                 text: 'กรุณารอสักครู่ ระบบกำลังนำข้อมูลเข้าสู่ระบบ',
@@ -203,19 +208,17 @@
                 body: JSON.stringify(data)
             })
             .then(() => {
-                // แสดงป๊อปอัพ Success แบบ Modern
                 Swal.fire({
                     icon: 'success',
                     title: 'ส่งคำขอเรียบร้อยแล้ว!',
                     html: `ระบบกำลังดำเนินการสร้างบัญชีให้ท่าน <br><b>โปรดตรวจสอบรหัสผ่านและคู่มือ</b> <br>ที่อีเมลสำรองภายใน 5-10 นาทีค่ะ`,
                     confirmButtonText: 'ตกลง',
-                    confirmButtonColor: '#7f0101', // สีแดงโรงเรียน
+                    confirmButtonColor: '#7f0101', 
                     iconColor: '#7f0101'
                 });
                 form.reset(); 
             })
             .catch(error => {
-                // แสดงป๊อปอัพ Error
                 Swal.fire({
                     icon: 'error',
                     title: 'เกิดข้อผิดพลาด',
@@ -228,48 +231,64 @@
                 btn.disabled = false;
             });
         });
-    </script>
-    <div class="container" id="forgotPasswordSection" style="margin-top: 20px; border-top: 2px solid #eee; padding-top: 20px;">
-    <h3 style="text-align: center; color: var(--primary-color);">ตรวจสอบชื่อผู้ใช้/รหัสผ่าน</h3>
-    <div class="form-group">
-        <label>อีเมลสำรองที่เคยลงทะเบียน</label>
-        <input type="email" id="checkEmail" placeholder="e.g. yourname@gmail.com">
-    </div>
-    <div class="form-group">
-        <label>เบอร์โทรศัพท์</label>
-        <input type="tel" id="checkPhone" placeholder="08X-XXX-XXXX">
-    </div>
-    <button type="button" class="btn" onclick="checkAccount()" style="background-color: #444;">ตรวจสอบข้อมูล</button>
-</div>
 
-<script>
-function checkAccount() {
-    const email = document.getElementById('checkEmail').value;
-    const phone = document.getElementById('checkPhone').value;
-
-    if(!email || !phone) {
-        Swal.fire('กรุณากรอกข้อมูลให้ครบ', '', 'warning');
-        return;
-    }
-
-    Swal.fire({ title: 'กำลังค้นหา...', didOpen: () => { Swal.showLoading(); } });
-
-    // ส่งคำขอไปที่ Apps Script (คนละฟังก์ชันกับตอนส่งชื่อ)
-    fetch(scriptURL + "?action=check&email=" + email + "&phone=" + phone)
-    .then(res => res.json())
-    .then(result => {
-        if(result.status === "found") {
-            Swal.fire({
-                icon: 'success',
-                title: 'พบข้อมูลบัญชีของคุณ',
-                html: `<b>ชื่อผู้ใช้:</b> ${result.username}<br><b>รหัสผ่าน:</b> ${result.password}`,
-                confirmButtonColor: '#7f0101'
+        // ฟังก์ชันใหม่ที่เพิ่มเข้ามา: เปิดป๊อปอัพกู้คืนรหัสผ่าน
+        async function openForgotPass() {
+            const { value: formValues } = await Swal.fire({
+                title: 'กู้คืนข้อมูลบัญชี',
+                html:
+                    '<div style="text-align:left;">' +
+                    '<label style="font-size:0.9rem; font-family:Prompt;">อีเมลสำรองที่ใช้สมัคร</label>' +
+                    '<input id="swal-input1" class="swal2-input" placeholder="e.g. example@gmail.com" style="margin-top:5px; font-size:1rem; font-family:Prompt;">' +
+                    '<label style="font-size:0.9rem; font-family:Prompt; margin-top:15px; display:block;">เบอร์โทรศัพท์</label>' +
+                    '<input id="swal-input2" class="swal2-input" placeholder="08XXXXXXXX" style="margin-top:5px; font-size:1rem; font-family:Prompt;">' +
+                    '</div>',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'ตรวจสอบข้อมูล',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#7f0101',
+                preConfirm: () => {
+                    return [
+                        document.getElementById('swal-input1').value,
+                        document.getElementById('swal-input2').value
+                    ]
+                }
             });
-        } else {
-            Swal.fire('ไม่พบข้อมูล', 'กรุณาตรวจสอบอีเมลและเบอร์โทรอีกครั้ง หรือติดต่อแอดมิน', 'error');
+
+            if (formValues) {
+                const [email, phone] = formValues;
+                if (!email || !phone) {
+                    Swal.fire('กรุณากรอกข้อมูลให้ครบถ้วน', '', 'warning');
+                    return;
+                }
+
+                Swal.fire({ title: 'กำลังค้นหาข้อมูล...', didOpen: () => { Swal.showLoading(); } });
+
+                // ส่งคำขอตรวจสอบไปยัง Google Apps Script
+                fetch(`${scriptURL}?action=check&email=${email}&phone=${phone}`)
+                .then(res => res.json())
+                .then(result => {
+                    if (result.status === "found") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'พบข้อมูลบัญชีของคุณ',
+                            html: `
+                                <div style="text-align:left; background:#f4f4f4; padding:15px; border-radius:10px; margin-top:10px; font-family:Prompt;">
+                                    <p style="margin:5px 0;"><b>ชื่อผู้ใช้:</b> <span style="color:#7f0101">${result.username}</span></p>
+                                    <p style="margin:5px 0;"><b>รหัสผ่านเริ่มต้น:</b> <span style="color:#7f0101">${result.password}</span></p>
+                                </div>
+                                <p style="font-size:0.8rem; color:red; margin-top:10px; font-family:Prompt;">*หากท่านเคยเปลี่ยนรหัสผ่านไปแล้ว โปรดใช้รหัสล่าสุดของท่าน</p>
+                            `,
+                            confirmButtonColor: '#7f0101'
+                        });
+                    } else {
+                        Swal.fire('ไม่พบข้อมูล', 'โปรดตรวจสอบอีเมลสำรองและเบอร์โทรให้ถูกต้อง หรือติดต่อแอดมินค่ะ', 'error');
+                    }
+                })
+                .catch(err => Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถเชื่อมต่อฐานข้อมูลได้ หรือยังไม่ได้ตั้งค่า doGet ใน Apps Script', 'error'));
+            }
         }
-    });
-}
-</script>
+    </script>
 </body>
 </html>
