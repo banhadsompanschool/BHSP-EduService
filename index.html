@@ -1,73 +1,38 @@
 <!DOCTYPE html>
-
 <html lang="th">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>ระบบขอใช้งานอีเมล - โรงเรียนบ้านหาดส้มแป้น</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
    <link rel="icon" type="image/png" href="image_7.png">
-
     <style>
-
         :root {
-
             --primary-color: #7f0101; 
-
             --bg-color: #f7f9fc;
-
             --text-color: #333333;
-
         }
-
         body {
-
             font-family: 'Prompt', sans-serif;
-
             background-color: var(--bg-color);
-
             color: var(--text-color);
-
             margin: 0;
-
             display: flex;
-
             flex-direction: column;
-
             align-items: center;
-
             min-height: 100vh;
-
         }
-
         .header {
-
             width: 100%;
-
             background-color: white;
-
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-
             padding: 15px 0;
-
             text-align: center;
-
         }
-
         .header img {
-
             max-width: 80px; 
-
             height: auto;
-
         }
 
         .header h1 {
@@ -429,37 +394,20 @@
                 form.reset(); 
 
             })
-
             .catch(error => {
-
                 // แสดงป๊อปอัพ Error
-
                 Swal.fire({
-
                     icon: 'error',
-
                     title: 'เกิดข้อผิดพลาด',
-
                     text: 'ไม่สามารถส่งข้อมูลได้: ' + error.message,
-
                     confirmButtonText: 'ลองอีกครั้ง',
-
                     confirmButtonColor: '#7f0101'
-
                 });
-
             })
-
             .finally(() => {
-
                 btn.disabled = false;
-
             });
-
         });
-
     </script>
-
 </body>
-
-</html> 
+</html>
