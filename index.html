@@ -165,12 +165,12 @@
         <form id="requestForm">
             <div class="form-group">
                 <label for="firstName">First Name / ชื่อจริง (อังกฤษ)</label>
-                <input type="text" id="firstName" placeholder="Somchai" pattern="[A-Za-z]+" title="ภาษาอังกฤษเท่านั้น" required>
+                <input type="text" id="firstName" placeholder="Lalita" pattern="[A-Za-z]+" title="ภาษาอังกฤษเท่านั้น" required>
             </div>
             
             <div class="form-group">
                 <label for="lastName">Last Name / นามสกุล (อังกฤษ)</label>
-                <input type="text" id="lastName" placeholder="Jaidee" pattern="[A-Za-z]+" title="ภาษาอังกฤษเท่านั้น" required>
+                <input type="text" id="lastName" placeholder="Chokruk" pattern="[A-Za-z]+" title="ภาษาอังกฤษเท่านั้น" required>
             </div>
 
             <div class="form-group">
@@ -185,7 +185,7 @@
             <div class="form-group">
                 <label for="recoveryEmail">อีเมลสำรอง</label>
                 <input type="email" id="recoveryEmail" placeholder="yourname@gmail.com" required>
-                <span class="note">*รับรหัสผ่านที่อีเมลนี้</span>
+                <span class="note">*ระบบจะส่งรหัสผ่านไปยังอีเมลนี้เท่านั้น</span>
             </div>
 
             <div class="form-group">
@@ -211,13 +211,19 @@
         const form = document.getElementById('requestForm');
         const btn = document.getElementById('submitBtn');
 
-        form.addEventListener('submit', e => {
+         form.addEventListener('submit', e => {
             e.preventDefault(); 
+            // แสดงหน้าจอ Loading แบบสวยๆ
             Swal.fire({
                 title: 'กำลังส่งคำขอ...',
+                text: 'กรุณารอสักครู่ ระบบกำลังนำข้อมูลเข้าสู่ระบบ',
                 allowOutsideClick: false,
-                didOpen: () => { Swal.showLoading(); }
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
             });
+             
             btn.disabled = true;
             const data = {
                 firstName: document.getElementById('firstName').value,
