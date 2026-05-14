@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบขอใช้งานอีเมล - โรงเรียนบ้านหาดส้มแป้น</title>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   <link rel="icon" type="image/png" href="image_7.png">
+    <style>
+        :root {
+            --primary-color: #7f0101; 
+            --bg-color: #f7f9fc;
+            --text-color: #333333;
+        }
+        body {
+            font-family: 'Prompt', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header {
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 15px 0;
+            text-align: center;
+        }
+        .header img {
+            max-width: 80px; 
+            height: auto;
+        }
+        .header h1 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin: 10px 0 0 0;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            width: 90%;
+            max-width: 500px;
+            margin: 40px auto;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Prompt', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Prompt', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #5c0101;
+        }
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            width: 100%;
+        }
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .note {
+            font-size: 0.8rem;
+            color: #d9534f;
+            margin-top: 5px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="https://i.postimg.cc/MpT9359t/d-sin-th-y-ngmi-di-t-ngch-x-(18).png" alt="โลโก้โรงเรียน">
+        <h1>โรงเรียนบ้านหาดส้มแป้น จ.ชุมพร</h1>
+    </div>
+
+    <div class="container">
+        <h2>ยื่นคำขอสร้างอีเมลเพื่อการศึกษา</h2>
+        <form id="requestForm">
+            <div class="form-group">
+                <label for="firstName">First Name / ชื่อจริง (ภาษาอังกฤษ)</label>
+                <input type="text" id="firstName" placeholder="e.g. Somchai" pattern="[A-Za-z]+" title="กรุณากรอกภาษาอังกฤษเท่านั้น" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="lastName">Last Name / นามสกุล (ภาษาอังกฤษ)</label>
+                <input type="text" id="lastName" placeholder="e.g. Jaidee" pattern="[A-Za-z]+" title="กรุณากรอกภาษาอังกฤษเท่านั้น" required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">สถานะผู้ใช้งาน</label>
+                <select id="status" required>
+                    <option value="" disabled selected>-- เลือกสถานะ --</option>
+                    <option value="Teacher">บุคลากร / ครู</option>
+                    <option value="Student">นักเรียน</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="recoveryEmail">อีเมลสำรอง (สำหรับรับรหัสผ่านและคู่มือ)</label>
+                <input type="email" id="recoveryEmail" placeholder="e.g. yourname@gmail.com" required>
+                <span class="note">*ระบบจะส่งรหัสผ่านไปยังอีเมลนี้เท่านั้น</span>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">เบอร์โทรศัพท์</label>
+                <input type="tel" id="phone" placeholder="08X-XXX-XXXX" required>
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">ส่งคำขอใช้งาน</button>
+        </form>
+    </div>
+
+    <div class="footer">
+        <p>หากมีข้อสงสัยหรือพบปัญหาการใช้งาน ติดต่อแอดมินระบบได้ที่<br>
+        Facebook : <a href="https://web.facebook.com/Banhadsompan/" target="_blank">Banhadsompan School - โรงเรียนบ้านหาดส้มแป้น</a> หรืออีเมล <a href="mailto:admin@banhadsompan.ac.th">admin@banhadsompan.ac.th</a></p>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyARIlBh16Y1es0R_iQ7ZHMmQDoctnbjD2cx4qXZtr3flwIWF242qM7j7t3eG1VOE1lXQ/exec';
+        const form = document.getElementById('requestForm');
+        const btn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', e => {
+            e.preventDefault(); 
+            
+            // แสดงหน้าจอ Loading แบบสวยๆ
+            Swal.fire({
+                title: 'กำลังส่งคำขอ...',
+                text: 'กรุณารอสักครู่ ระบบกำลังนำข้อมูลเข้าสู่ระบบ',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            btn.disabled = true;
+
+            const data = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                status: document.getElementById('status').value,
+                recoveryEmail: document.getElementById('recoveryEmail').value,
+                phone: document.getElementById('phone').value
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', 
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(() => {
+                // แสดงป๊อปอัพ Success แบบ Modern
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ส่งคำขอเรียบร้อยแล้ว!',
+                    html: `ระบบกำลังดำเนินการสร้างบัญชีให้ท่าน <br><b>โปรดตรวจสอบรหัสผ่านและคู่มือ</b> <br>ที่อีเมลสำรองภายใน 5-10 นาทีค่ะ`,
+                    confirmButtonText: 'ตกลง',
+                    confirmButtonColor: '#7f0101', // สีแดงโรงเรียน
+                    iconColor: '#7f0101'
+                });
+                form.reset(); 
+            })
+            .catch(error => {
+                // แสดงป๊อปอัพ Error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'ไม่สามารถส่งข้อมูลได้: ' + error.message,
+                    confirmButtonText: 'ลองอีกครั้ง',
+                    confirmButtonColor: '#7f0101'
+                });
+            })
+            .finally(() => {
+                btn.disabled = false;
+            });
+        });
+    </script>
+</body>
+</html>
