@@ -229,5 +229,47 @@
             });
         });
     </script>
+    <div class="container" id="forgotPasswordSection" style="margin-top: 20px; border-top: 2px solid #eee; padding-top: 20px;">
+    <h3 style="text-align: center; color: var(--primary-color);">ตรวจสอบชื่อผู้ใช้/รหัสผ่าน</h3>
+    <div class="form-group">
+        <label>อีเมลสำรองที่เคยลงทะเบียน</label>
+        <input type="email" id="checkEmail" placeholder="e.g. yourname@gmail.com">
+    </div>
+    <div class="form-group">
+        <label>เบอร์โทรศัพท์</label>
+        <input type="tel" id="checkPhone" placeholder="08X-XXX-XXXX">
+    </div>
+    <button type="button" class="btn" onclick="checkAccount()" style="background-color: #444;">ตรวจสอบข้อมูล</button>
+</div>
+
+<script>
+function checkAccount() {
+    const email = document.getElementById('checkEmail').value;
+    const phone = document.getElementById('checkPhone').value;
+
+    if(!email || !phone) {
+        Swal.fire('กรุณากรอกข้อมูลให้ครบ', '', 'warning');
+        return;
+    }
+
+    Swal.fire({ title: 'กำลังค้นหา...', didOpen: () => { Swal.showLoading(); } });
+
+    // ส่งคำขอไปที่ Apps Script (คนละฟังก์ชันกับตอนส่งชื่อ)
+    fetch(scriptURL + "?action=check&email=" + email + "&phone=" + phone)
+    .then(res => res.json())
+    .then(result => {
+        if(result.status === "found") {
+            Swal.fire({
+                icon: 'success',
+                title: 'พบข้อมูลบัญชีของคุณ',
+                html: `<b>ชื่อผู้ใช้:</b> ${result.username}<br><b>รหัสผ่าน:</b> ${result.password}`,
+                confirmButtonColor: '#7f0101'
+            });
+        } else {
+            Swal.fire('ไม่พบข้อมูล', 'กรุณาตรวจสอบอีเมลและเบอร์โทรอีกครั้ง หรือติดต่อแอดมิน', 'error');
+        }
+    });
+}
+</script>
 </body>
 </html>
