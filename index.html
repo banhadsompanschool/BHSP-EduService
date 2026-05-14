@@ -34,380 +34,278 @@
             max-width: 80px; 
             height: auto;
         }
-
         .header h1 {
-
             color: var(--primary-color);
-
             font-size: 1.2rem;
-
             margin: 10px 0 0 0;
-
         }
-
         .container {
-
             background-color: white;
-
             padding: 40px;
-
-            border-radius: 12px;
-
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-
+            /* ปรับให้โค้งมนมากขึ้นจาก 12px เป็น 24px */
+            border-radius: 24px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             width: 90%;
-
             max-width: 500px;
-
             margin: 40px auto;
-
         }
-
         h2 {
-
             text-align: center;
-
             margin-bottom: 30px;
-
             font-weight: 500;
-
         }
-
         .form-group {
-
             margin-bottom: 20px;
-
         }
-
         label {
-
             display: block;
-
             margin-bottom: 8px;
-
             font-size: 0.9rem;
-
             font-weight: 500;
-
         }
-
         input, select {
-
             width: 100%;
-
-            padding: 12px;
-
-            border: 1px solid #ddd;
-
-            border-radius: 8px;
-
+            padding: 12px 16px;
+            border: 1.5px solid #eee;
+            /* ปรับให้ช่องกรอกโค้งมนมากขึ้นเป็น 15px */
+            border-radius: 15px; 
             box-sizing: border-box;
-
             font-family: 'Prompt', sans-serif;
-
             font-size: 1rem;
-
-            transition: border-color 0.3s;
-
+            transition: all 0.3s;
+            background-color: #fafafa;
         }
-
         input:focus, select:focus {
-
             outline: none;
-
             border-color: var(--primary-color);
-
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(127, 1, 1, 0.1);
         }
-
         .btn {
-
             width: 100%;
-
             padding: 14px;
-
             background-color: var(--primary-color);
-
             color: white;
-
             border: none;
-
-            border-radius: 8px;
-
+            /* ปรับปุ่มให้โค้งมนสวยงามเป็น 15px */
+            border-radius: 15px; 
             font-size: 1rem;
-
-            font-family: 'Prompt', sans-serif;
-
-            cursor: pointer;
-
-            transition: background-color 0.3s;
-
-            margin-top: 10px;
-
-        }
-
-        .btn:hover {
-
-            background-color: #5c0101;
-
-        }
-
-        .btn:disabled {
-
-            background-color: #ccc;
-
-            cursor: not-allowed;
-
-        }
-
-        .footer {
-
-            margin-top: auto;
-
-            padding: 20px;
-
-            text-align: center;
-
-            font-size: 0.85rem;
-
-            color: #666;
-
-            width: 100%;
-
-        }
-
-        .footer a {
-
-            color: var(--primary-color);
-
-            text-decoration: none;
-
             font-weight: 500;
-
+            font-family: 'Prompt', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(127, 1, 1, 0.2);
         }
-
-        .note {
-
-            font-size: 0.8rem;
-
-            color: #d9534f;
-
-            margin-top: 5px;
-
+        .btn:hover {
+            background-color: #5c0101;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(127, 1, 1, 0.3);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        .forgot-link {
             display: block;
-
+            text-align: center;
+            margin-top: 25px;
+            color: #888;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+            cursor: pointer;
         }
-
+        .forgot-link:hover {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: auto;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            width: 100%;
+        }
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .note {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 6px;
+            display: block;
+        }
+        /* ปรับแต่งป๊อปอัพ SweetAlert ให้โค้งมนทั้งชุด */
+        .swal2-popup {
+            border-radius: 25px !important;
+            padding: 2em !important;
+        }
+        .swal2-confirm, .swal2-cancel {
+            border-radius: 12px !important;
+        }
     </style>
-
 </head>
-
 <body>
 
-
-
     <div class="header">
-
         <img src="https://i.postimg.cc/MpT9359t/d-sin-th-y-ngmi-di-t-ngch-x-(18).png" alt="โลโก้โรงเรียน">
-
         <h1>โรงเรียนบ้านหาดส้มแป้น จ.ชุมพร</h1>
-
     </div>
-
-
 
     <div class="container">
-
-        <h2>ยื่นคำขอสร้างอีเมลเพื่อการศึกษา</h2>
-
+        <h2>ยื่นคำขอสร้างอีเมล</h2>
         <form id="requestForm">
-
             <div class="form-group">
-
-                <label for="firstName">First Name / ชื่อจริง (ภาษาอังกฤษ)</label>
-
-                <input type="text" id="firstName" placeholder="e.g. Somchai" pattern="[A-Za-z]+" title="กรุณากรอกภาษาอังกฤษเท่านั้น" required>
-
+                <label for="firstName">First Name / ชื่อจริง (อังกฤษ)</label>
+                <input type="text" id="firstName" placeholder="Somchai" pattern="[A-Za-z]+" title="ภาษาอังกฤษเท่านั้น" required>
             </div>
-
             
-
             <div class="form-group">
-
-                <label for="lastName">Last Name / นามสกุล (ภาษาอังกฤษ)</label>
-
-                <input type="text" id="lastName" placeholder="e.g. Jaidee" pattern="[A-Za-z]+" title="กรุณากรอกภาษาอังกฤษเท่านั้น" required>
-
+                <label for="lastName">Last Name / นามสกุล (อังกฤษ)</label>
+                <input type="text" id="lastName" placeholder="Jaidee" pattern="[A-Za-z]+" title="ภาษาอังกฤษเท่านั้น" required>
             </div>
 
-
-
             <div class="form-group">
-
                 <label for="status">สถานะผู้ใช้งาน</label>
-
                 <select id="status" required>
-
                     <option value="" disabled selected>-- เลือกสถานะ --</option>
-
                     <option value="Teacher">บุคลากร / ครู</option>
-
                     <option value="Student">นักเรียน</option>
-
                 </select>
-
             </div>
 
-
-
             <div class="form-group">
-
-                <label for="recoveryEmail">อีเมลสำรอง (สำหรับรับรหัสผ่านและคู่มือ)</label>
-
-                <input type="email" id="recoveryEmail" placeholder="e.g. yourname@gmail.com" required>
-
-                <span class="note">*ระบบจะส่งรหัสผ่านไปยังอีเมลนี้เท่านั้น</span>
-
+                <label for="recoveryEmail">อีเมลสำรอง</label>
+                <input type="email" id="recoveryEmail" placeholder="yourname@gmail.com" required>
+                <span class="note">*รับรหัสผ่านที่อีเมลนี้</span>
             </div>
 
-
-
             <div class="form-group">
-
                 <label for="phone">เบอร์โทรศัพท์</label>
-
-                <input type="tel" id="phone" placeholder="08X-XXX-XXXX" required>
-
+                <input type="tel" id="phone" placeholder="08XXXXXXXX" required>
             </div>
-
-
 
             <button type="submit" class="btn" id="submitBtn">ส่งคำขอใช้งาน</button>
-
         </form>
 
+        <a href="javascript:void(0)" class="forgot-link" onclick="openForgotPass()">
+            ลืมรหัสผ่าน หรือจำชื่อผู้ใช้งานไม่ได้?
+        </a>
     </div>
-
-
 
     <div class="footer">
-
-        <p>หากมีข้อสงสัยหรือพบปัญหาการใช้งาน ติดต่อแอดมินระบบได้ที่<br>
-
-        Facebook : <a href="https://web.facebook.com/Banhadsompan/" target="_blank">Banhadsompan School - โรงเรียนบ้านหาดส้มแป้น</a> หรืออีเมล <a href="mailto:admin@banhadsompan.ac.th">admin@banhadsompan.ac.th</a></p>
-
+        <p>ติดต่อแอดมินระบบได้ที่<br>
+        <a href="https://web.facebook.com/Banhadsompan/" target="_blank">Facebook โรงเรียนบ้านหาดส้มแป้น</a></p>
     </div>
 
-
-
     <script>
-
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyARIlBh16Y1es0R_iQ7ZHMmQDoctnbjD2cx4qXZtr3flwIWF242qM7j7t3eG1VOE1lXQ/exec';
-
         const form = document.getElementById('requestForm');
-
         const btn = document.getElementById('submitBtn');
 
-
-
         form.addEventListener('submit', e => {
-
             e.preventDefault(); 
-
-            
-
-            // แสดงหน้าจอ Loading แบบสวยๆ
-
             Swal.fire({
-
                 title: 'กำลังส่งคำขอ...',
-
-                text: 'กรุณารอสักครู่ ระบบกำลังนำข้อมูลเข้าสู่ระบบ',
-
                 allowOutsideClick: false,
-
-                showConfirmButton: false,
-
-                didOpen: () => {
-
-                    Swal.showLoading();
-
-                }
-
+                didOpen: () => { Swal.showLoading(); }
             });
-
-
-
             btn.disabled = true;
-
-
-
             const data = {
-
                 firstName: document.getElementById('firstName').value,
-
                 lastName: document.getElementById('lastName').value,
-
                 status: document.getElementById('status').value,
-
                 recoveryEmail: document.getElementById('recoveryEmail').value,
-
                 phone: document.getElementById('phone').value
-
             };
-
-
-
             fetch(scriptURL, {
-
                 method: 'POST',
-
                 mode: 'no-cors', 
-
                 cache: 'no-cache',
-
                 headers: { 'Content-Type': 'application/json' },
-
                 body: JSON.stringify(data)
-
             })
-
             .then(() => {
-
-                // แสดงป๊อปอัพ Success แบบ Modern
-
                 Swal.fire({
-
                     icon: 'success',
-
-                    title: 'ส่งคำขอเรียบร้อยแล้ว!',
-
-                    html: `ระบบกำลังดำเนินการสร้างบัญชีให้ท่าน <br><b>โปรดตรวจสอบรหัสผ่านและคู่มือ</b> <br>ที่อีเมลสำรองภายใน 5-10 นาทีค่ะ`,
-
-                    confirmButtonText: 'ตกลง',
-
-                    confirmButtonColor: '#7f0101', // สีแดงโรงเรียน
-
-                    iconColor: '#7f0101'
-
-                });
-
-                form.reset(); 
-
-            })
-            .catch(error => {
-                // แสดงป๊อปอัพ Error
-                Swal.fire({
-                    icon: 'error',
-                    title: 'เกิดข้อผิดพลาด',
-                    text: 'ไม่สามารถส่งข้อมูลได้: ' + error.message,
-                    confirmButtonText: 'ลองอีกครั้ง',
+                    title: 'ส่งคำขอเรียบร้อย!',
+                    text: 'โปรดตรวจสอบอีเมลสำรองภายใน 5-10 นาทีค่ะ',
                     confirmButtonColor: '#7f0101'
                 });
+                form.reset(); 
             })
-            .finally(() => {
-                btn.disabled = false;
-            });
+            .catch(error => {
+                Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', confirmButtonColor: '#7f0101' });
+            })
+            .finally(() => { btn.disabled = false; });
         });
+
+        async function openForgotPass() {
+            const { value: formValues } = await Swal.fire({
+                title: 'กู้คืนรหัสผ่าน',
+                html: `
+                    <div style="text-align: center; padding: 10px 0;">
+                        <div style="text-align: left; display: inline-block; width: 100%; max-width: 320px;">
+                            <label style="font-family: 'Prompt'; font-size: 0.9rem;">อีเมลสำรอง</label>
+                            <input id="swal-input1" class="swal2-input" placeholder="example@gmail.com" style="width: 100%; border-radius: 12px; font-family: 'Prompt'; height: 45px; border: 1px solid #ddd; margin: 5px 0 15px 0; padding: 0 15px; box-sizing: border-box;">
+                            
+                            <label style="font-family: 'Prompt'; font-size: 0.9rem;">เบอร์โทรศัพท์</label>
+                            <input id="swal-input2" class="swal2-input" placeholder="08XXXXXXXX" style="width: 100%; border-radius: 12px; font-family: 'Prompt'; height: 45px; border: 1px solid #ddd; margin: 5px 0 0 0; padding: 0 15px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                `,
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'ตรวจสอบ',
+                cancelButtonText: 'ปิด',
+                confirmButtonColor: '#7f0101',
+                width: '90%',
+                maxWidth: '450px',
+                preConfirm: () => {
+                    return [
+                        document.getElementById('swal-input1').value,
+                        document.getElementById('swal-input2').value
+                    ]
+                }
+            });
+
+            if (formValues) {
+                const [email, phone] = formValues;
+                if (!email || !phone) {
+                    Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบ', confirmButtonColor: '#7f0101' });
+                    return;
+                }
+                Swal.fire({ title: 'กำลังค้นหา...', didOpen: () => { Swal.showLoading(); } });
+                fetch(`${scriptURL}?action=check&email=${email}&phone=${phone}`)
+                .then(res => res.json())
+                .then(result => {
+                    if (result.status === "found") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'พบข้อมูลของคุณ',
+                            html: `
+                                <div style="background: #fdfdfd; padding: 20px; border-radius: 20px; border: 1px solid #eee; text-align: left; font-family: 'Prompt';">
+                                    <p style="margin: 0 0 10px 0;"><b>ชื่อผู้ใช้งาน:</b> <br><span style="color: #7f0101; font-size: 1.1rem;">${result.username}</span></p>
+                                    <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
+                                    <p style="margin: 0;"><b>รหัสผ่านเริ่มต้น:</b> <br><span style="color: #7f0101; font-size: 1.1rem;">${result.password}</span></p>
+                                </div>
+                            `,
+                            confirmButtonColor: '#7f0101'
+                        });
+                    } else {
+                        Swal.fire({ icon: 'error', title: 'ไม่พบข้อมูล', confirmButtonColor: '#7f0101' });
+                    }
+                });
+            }
+        }
     </script>
 </body>
 </html>
