@@ -10,6 +10,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    <link rel="icon" type="image/png" href="image_7.png">
     <style>
+        /* บังคับข้อความภาษาไทยขึ้นบรรทัดใหม่ เฉพาะบนสมาร์ทโฟนจอเล็ก */
+        @media screen and (max-width: 480px) {
+            .mobile-span {
+                display: block;
+            }
+        }
         :root {
             --primary-color: #7f0101; 
             --bg-color: #f7f9fc;
@@ -168,7 +174,7 @@
 
     <div class="header" >
         <img src="https://i.postimg.cc/MpT9359t/d-sin-th-y-ngmi-di-t-ngch-x-(18).png" alt="โลโก้โรงเรียน">
-        <h1>Banhadsompan School <br class="mobile-br"> - โรงเรียนบ้านหาดส้มแป้น</h1>
+        <h1><span>Banhadsompan School - โรงเรียน</span> <span class="mobile-span">บ้านหาดส้มแป้น</span></h1>
     </div>
 
     <div class="container">
@@ -284,12 +290,6 @@ iconColor: '#7f0101'
         /* ซ่อนการเว้นบรรทัดบนจอใหญ่ */
         .mobile-br {
             display: none;
-        }
-        /* บังคับขึ้นบรรทัดใหม่เฉพาะจอมือถือ (ขนาดไม่เกิน 600px) */
-        @media screen and (max-width: 600px) {
-            .mobile-br {
-                display: block;
-            }
         }
     </script>
     <div style="padding-bottom: 120px;"></div>
