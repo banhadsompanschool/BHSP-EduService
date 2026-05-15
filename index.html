@@ -24,14 +24,16 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            overflow-x: hidden; /* เติมบรรทัดนี้: ล็อกหน้าจอไม่ให้มีขอบโหว่ */
         }
         .header {
             width: 100%;
+            align-self: stretch; /* เติมบรรทัดนี้: บังคับแถบกางเต็มจอ เอาชนะคำสั่งกึ่งกลาง */
             background-color: white;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             padding: 15px 0;
             text-align: center;
-            box-sizing: border-box; /* เติมเพิ่มบรรทัดนี้เข้าไปค่ะ */
+            box-sizing: border-box; /* เติมบรรทัดนี้: ล็อกไม่ให้กล่องล้นขอบจอ */
         }
         .header img {
             max-width: 80px; 
@@ -41,8 +43,8 @@
             color: var(--primary-color);
             font-size: 1.2rem;
             margin: 10px 0 0 0;
-            word-break: break-word; /* เติมเพิ่มบรรทัดนี้เพื่อซ่อมกล่องสี่เหลี่ยมค่ะ */
-            padding: 0 20px;        /* เติมเพิ่มบรรทัดนี้เพื่อกันข้อความชนขอบสี่เหลี่ยม */
+            padding: 0 15px; /* เติมบรรทัดนี้: กันข้อความชนขอบหน้าจอซ้าย-ขวา */
+            word-break: break-word; /* เติมบรรทัดนี้: บังคับตัวหนังสือขึ้นบรรทัดใหม่ถ้าจอมือถือแคบ */
         }
         .container {
             background-color: white;
