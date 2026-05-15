@@ -196,9 +196,7 @@
             <button type="submit" class="btn" id="submitBtn">ส่งคำขอใช้งาน</button>
         </form>
 
-        <a href="javascript:void(0)" class="forgot-link" onclick="openForgotPass()">
-            ลืมรหัสผ่าน หรือจำชื่อผู้ใช้งานไม่ได้?
-        </a>
+        <a href="https://m.me/ชื่อผู้ใช้หรือไอดีเพจโรงเรียน" target="_blank" style="color: #7f0101; text-decoration: none;">ลืมรหัสผ่าน หรือจำชื่อผู้ใช้งานไม่ได้?</a>
     </div>
 
    <div class="footer">
@@ -254,65 +252,6 @@ iconColor: '#7f0101'
             })
             .finally(() => { btn.disabled = false; });
         });
-
-        async function openForgotPass() {
-            const { value: formValues } = await Swal.fire({
-                title: 'กู้คืนรหัสผ่าน',
-                html: `
-                    <div style="text-align: center; padding: 10px 0;">
-                        <div style="text-align: left; display: inline-block; width: 100%; max-width: 320px;">
-                            <label style="font-family: 'Prompt'; font-size: 0.9rem;">อีเมลสำรอง</label>
-                            <input id="swal-input1" class="swal2-input" placeholder="example@gmail.com" style="width: 100%; border-radius: 12px; font-family: 'Prompt'; height: 45px; border: 1px solid #ddd; margin: 5px 0 15px 0; padding: 0 15px; box-sizing: border-box;">
-                            
-                            <label style="font-family: 'Prompt'; font-size: 0.9rem;">เบอร์โทรศัพท์</label>
-                            <input id="swal-input2" class="swal2-input" placeholder="08XXXXXXXX" style="width: 100%; border-radius: 12px; font-family: 'Prompt'; height: 45px; border: 1px solid #ddd; margin: 5px 0 0 0; padding: 0 15px; box-sizing: border-box;">
-                        </div>
-                    </div>
-                `,
-                focusConfirm: false,
-                showCancelButton: true,
-                confirmButtonText: 'ตรวจสอบ',
-                cancelButtonText: 'ปิด',
-                confirmButtonColor: '#7f0101',
-                width: '90%',
-                maxWidth: '450px',
-                preConfirm: () => {
-                    return [
-                        document.getElementById('swal-input1').value,
-                        document.getElementById('swal-input2').value
-                    ]
-                }
-            });
-
-            if (formValues) {
-                const [email, phone] = formValues;
-                if (!email || !phone) {
-                    Swal.fire({ icon: 'warning', title: 'ข้อมูลไม่ครบ', confirmButtonColor: '#7f0101' });
-                    return;
-                }
-                Swal.fire({ title: 'กำลังค้นหา...', didOpen: () => { Swal.showLoading(); } });
-                fetch(`${scriptURL}?action=check&email=${email}&phone=${phone}`)
-                .then(res => res.json())
-                .then(result => {
-                    if (result.status === "found") {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'พบข้อมูลของคุณ',
-                            html: `
-                                <div style="background: #fdfdfd; padding: 20px; border-radius: 20px; border: 1px solid #eee; text-align: left; font-family: 'Prompt';">
-                                    <p style="margin: 0 0 10px 0;"><b>ชื่อผู้ใช้งาน:</b> <br><span style="color: #7f0101; font-size: 1.1rem;">${result.username}</span></p>
-                                    <hr style="border: 0; border-top: 1px solid #eee; margin: 10px 0;">
-                                    <p style="margin: 0;"><b>รหัสผ่านเริ่มต้น:</b> <br><span style="color: #7f0101; font-size: 1.1rem;">${result.password}</span></p>
-                                </div>
-                            `,
-                            confirmButtonColor: '#7f0101'
-                        });
-                    } else {
-                        Swal.fire({ icon: 'error', title: 'ไม่พบข้อมูล', confirmButtonColor: '#7f0101' });
-                    }
-                });
-            }
-        }
     </script>
 </body>
 </html>
