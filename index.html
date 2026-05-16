@@ -79,7 +79,7 @@
             </div>
             <div class="form-group">
                 <label for="phone">เบอร์โทรศัพท์</label>
-                <input type="tel" id="phone" placeholder="08XXXXXXXX" required>
+                <input type="tel" id="phone" placeholder="08XXXXXXXX" pattern="[0-9]{10}" maxlength="10" title="กรุณากรอกเบอร์โทรศัพท์เป็นตัวเลข 10 หลักเท่านั้น" required>
             </div>
             <button type="submit" class="btn" id="submitBtn">ส่งคำขอใช้งาน</button>
         </form>
