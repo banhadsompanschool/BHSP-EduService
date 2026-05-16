@@ -240,56 +240,121 @@
         </p>
     </div>
         
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwLRqPbC9CIvz7eOmA0H5nQcJ3eM7JXnkazKoWqvPFGodKcywKAVfEEF2zWRNbMOCLeHQ/exec';
+    const form = document.getElementById('requestForm');
+    const btn = document.getElementById('submitBtn');
 
-    <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwLRqPbC9CIvz7eOmA0H5nQcJ3eM7JXnkazKoWqvPFGodKcywKAVfEEF2zWRNbMOCLeHQ/exec';
-        const form = document.getElementById('requestForm');
-        const btn = document.getElementById('submitBtn');
+    // เพิ่มตัวแปรสำหรับป๊อปอัพนักเรียน
+    const statusDropdown = document.getElementById('status');
+    const studentModal = document.getElementById('studentAdditionalInfoModal');
+    const gradeDropdown = document.getElementById('studentGrade');
+    const studentNumberInput = document.getElementById('studentNumber');
+    const finalSubmitBtn = document.getElementById('finalSubmitBtn');
+    const cancelStudentModal = document.getElementById('cancelStudentModal');
 
-         form.addEventListener('submit', e => {
-            e.preventDefault(); 
-            // แสดงหน้าจอ Loading แบบสวยๆ
-            Swal.fire({
-                title: 'กำลังส่งคำขอ...',
-                text: 'กรุณารอสักครู่ ระบบกำลังนำข้อมูลเข้าสู่ระบบ',
-                allowOutsideClick: false,
-                showConfirmButton: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-             
-            btn.disabled = true;
-            const data = {
-                firstName: document.getElementById('firstName').value,
-                lastName: document.getElementById('lastName').value,
-                status: document.getElementById('status').value,
-                recoveryEmail: document.getElementById('recoveryEmail').value,
-                phone: document.getElementById('phone').value
-            };
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors', 
-                cache: 'no-cache',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(() => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'ส่งคำขอเรียบร้อย!',
-                    text: 'โรงเรียนจะดำเนินการและแจ้งผลไปยังอีเมลสำรองภายใน 24 ชั่วโมงค่ะ',
-                    confirmButtonColor: '#7f0101', // <--- เติมลูกน้ำ (Comma) ตรงนี้ครับ!
-iconColor: '#7f0101'
-                });
-                form.reset(); 
-            })
-            .catch(error => {
-                Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', confirmButtonColor: '#7f0101' });
-            })
-            .finally(() => { btn.disabled = false; });
+    // ==========================================
+    // 1. ดักจับเมื่อกดปุ่ม "ส่งคำขอ" ที่หน้าเว็บหลัก
+    // ==========================================
+    form.addEventListener('submit', e => {
+        e.preventDefault(); // เบรกการส่งฟอร์มไว้ก่อน
+
+        if (statusDropdown.value === 'นักเรียน') {
+            // ถ้านักเรียน ให้โชว์ป๊อปอัพถาม ป. และ เลขที่
+            studentModal.style.display = 'block';
+        } else {
+            // ถ้าเป็นครู/บุคลากร ส่งข้อมูลไปเลย
+            sendDataToGoogle(statusDropdown.value);
+        }
+    });
+
+    // ==========================================
+    // 2. เมื่อกดปุ่ม "ส่งคำขอ ➔" ในป๊อปอัพนักเรียน
+    // ==========================================
+    finalSubmitBtn.addEventListener('click', function() {
+        const selectedGrade = gradeDropdown.value;
+        const studentNumber = studentNumberInput.value;
+
+        if (!selectedGrade) {
+            Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณาเลือกชั้น ป. ค่ะ', confirmButtonColor: '#7f0101' });
+            return;
+        }
+        if (!studentNumber) {
+            Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณากรอกเลขที่ค่ะ', confirmButtonColor: '#7f0101' });
+            return;
+        }
+
+        // รวมร่างสถานะ! (เช่น "นักเรียน (ป.6 เลขที่ 15)")
+        const combinedStatus = `นักเรียน (ป.${selectedGrade} เลขที่ ${studentNumber})`;
+        
+        // ปิดป๊อปอัพ
+        studentModal.style.display = 'none';
+        
+        // ส่งข้อมูลไป Google
+        sendDataToGoogle(combinedStatus);
+    });
+
+    // ==========================================
+    // 3. เมื่อกดปุ่ม "ยกเลิก" ในป๊อปอัพนักเรียน
+    // ==========================================
+    cancelStudentModal.addEventListener('click', function() {
+        studentModal.style.display = 'none';
+        gradeDropdown.selectedIndex = 0;
+        studentNumberInput.value = '';
+    });
+
+    // ==========================================
+    // 4. ฟังก์ชันหลักสำหรับส่งข้อมูล (โค้ดเดิมของคุณย้ายมาตรงนี้)
+    // ==========================================
+    function sendDataToGoogle(finalStatus) {
+        // แสดงหน้าจอ Loading แบบสวยๆ
+        Swal.fire({
+            title: 'กำลังส่งคำขอ...',
+            text: 'กรุณารอสักครู่ ระบบกำลังนำข้อมูลเข้าสู่ระบบ',
+            allowOutsideClick: false,
+            showConfirmButton: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
         });
-    </script>
+             
+        btn.disabled = true;
+        const data = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            status: finalStatus, // <--- ใช้ข้อมูลสถานะที่รับมา (ที่รวม ป. และเลขที่แล้ว)
+            recoveryEmail: document.getElementById('recoveryEmail').value,
+            phone: document.getElementById('phone').value
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors', 
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(() => {
+            Swal.fire({
+                icon: 'success',
+                title: 'ส่งคำขอเรียบร้อย!',
+                text: 'โรงเรียนจะดำเนินการและแจ้งผลไปยังอีเมลสำรองภายใน 24 ชั่วโมงค่ะ',
+                confirmButtonColor: '#7f0101', 
+                iconColor: '#7f0101'
+            });
+            form.reset(); 
+            // เคลียร์ค่าในป๊อปอัพด้วย
+            gradeDropdown.selectedIndex = 0;
+            studentNumberInput.value = '';
+        })
+        .catch(error => {
+            Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', confirmButtonColor: '#7f0101' });
+        })
+        .finally(() => { 
+            btn.disabled = false; 
+        });
+    }
+</script>
     <div style="padding-bottom: 120px;"></div>
 </body>
 </html>
