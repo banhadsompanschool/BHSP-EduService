@@ -197,7 +197,7 @@
                 <select id="status" required>
                     <option value="" disabled selected>-- เลือกสถานะ --</option>
                     <option value="Teacher">บุคลากร / ครู</option>
-                    <option value="Student">นักเรียน</option>
+                    <option value="นักเรียน">นักเรียน</option>
                 </select>
             </div>
 
@@ -245,7 +245,7 @@
     const form = document.getElementById('requestForm');
     const btn = document.getElementById('submitBtn');
 
-    // เพิ่มตัวแปรสำหรับป๊อปอัพนักเรียน
+    // ดึง Elements ของป๊อปอัพ
     const statusDropdown = document.getElementById('status');
     const studentModal = document.getElementById('studentAdditionalInfoModal');
     const gradeDropdown = document.getElementById('studentGrade');
@@ -253,61 +253,56 @@
     const finalSubmitBtn = document.getElementById('finalSubmitBtn');
     const cancelStudentModal = document.getElementById('cancelStudentModal');
 
-    // ==========================================
-    // 1. ดักจับเมื่อกดปุ่ม "ส่งคำขอ" ที่หน้าเว็บหลัก
-    // ==========================================
+    // 1. ดักจับเมื่อกดปุ่ม "ส่งคำขอ" บนหน้าเว็บหลัก
     form.addEventListener('submit', e => {
-        e.preventDefault(); // เบรกการส่งฟอร์มไว้ก่อน
+        e.preventDefault(); 
+        
+        // เช็กค่า value ที่ได้ (เพื่อความชัวร์ ให้ log ดูใน Console)
+        console.log("สถานะที่เลือกคือ:", statusDropdown.value);
 
         if (statusDropdown.value === 'นักเรียน') {
-            // ถ้านักเรียน ให้โชว์ป๊อปอัพถาม ป. และ เลขที่
-            studentModal.style.display = 'block';
+            if (studentModal) {
+                studentModal.style.display = 'block';
+            } else {
+                alert("หาโค้ดกล่องป๊อปอัพนักเรียนไม่เจอ กรุณาตรวจสอบ HTML ครับ");
+            }
         } else {
-            // ถ้าเป็นครู/บุคลากร ส่งข้อมูลไปเลย
             sendDataToGoogle(statusDropdown.value);
         }
     });
 
-    // ==========================================
     // 2. เมื่อกดปุ่ม "ส่งคำขอ ➔" ในป๊อปอัพนักเรียน
-    // ==========================================
-    finalSubmitBtn.addEventListener('click', function() {
-        const selectedGrade = gradeDropdown.value;
-        const studentNumber = studentNumberInput.value;
+    if(finalSubmitBtn) {
+        finalSubmitBtn.addEventListener('click', function() {
+            const selectedGrade = gradeDropdown.value;
+            const studentNumber = studentNumberInput.value;
 
-        if (!selectedGrade) {
-            Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณาเลือกชั้น ป. ค่ะ', confirmButtonColor: '#7f0101' });
-            return;
-        }
-        if (!studentNumber) {
-            Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณากรอกเลขที่ค่ะ', confirmButtonColor: '#7f0101' });
-            return;
-        }
+            if (!selectedGrade) {
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณาเลือกชั้น ป. ค่ะ', confirmButtonColor: '#7f0101' });
+                return;
+            }
+            if (!studentNumber) {
+                Swal.fire({ icon: 'warning', title: 'แจ้งเตือน', text: 'กรุณากรอกเลขที่ค่ะ', confirmButtonColor: '#7f0101' });
+                return;
+            }
 
-        // รวมร่างสถานะ! (เช่น "นักเรียน (ป.6 เลขที่ 15)")
-        const combinedStatus = `นักเรียน (ป.${selectedGrade} เลขที่ ${studentNumber})`;
-        
-        // ปิดป๊อปอัพ
-        studentModal.style.display = 'none';
-        
-        // ส่งข้อมูลไป Google
-        sendDataToGoogle(combinedStatus);
-    });
+            const combinedStatus = `นักเรียน (ป.${selectedGrade} เลขที่ ${studentNumber})`;
+            studentModal.style.display = 'none';
+            sendDataToGoogle(combinedStatus);
+        });
+    }
 
-    // ==========================================
-    // 3. เมื่อกดปุ่ม "ยกเลิก" ในป๊อปอัพนักเรียน
-    // ==========================================
-    cancelStudentModal.addEventListener('click', function() {
-        studentModal.style.display = 'none';
-        gradeDropdown.selectedIndex = 0;
-        studentNumberInput.value = '';
-    });
+    // 3. ปิดป๊อปอัพนักเรียน
+    if(cancelStudentModal) {
+        cancelStudentModal.addEventListener('click', function() {
+            studentModal.style.display = 'none';
+            gradeDropdown.selectedIndex = 0;
+            studentNumberInput.value = '';
+        });
+    }
 
-    // ==========================================
-    // 4. ฟังก์ชันหลักสำหรับส่งข้อมูล (โค้ดเดิมของคุณย้ายมาตรงนี้)
-    // ==========================================
+    // 4. ฟังก์ชันหลักสำหรับส่งข้อมูลไป Google
     function sendDataToGoogle(finalStatus) {
-        // แสดงหน้าจอ Loading แบบสวยๆ
         Swal.fire({
             title: 'กำลังส่งคำขอ...',
             text: 'กรุณารอสักครู่ ระบบกำลังนำข้อมูลเข้าสู่ระบบ',
@@ -322,7 +317,7 @@
         const data = {
             firstName: document.getElementById('firstName').value,
             lastName: document.getElementById('lastName').value,
-            status: finalStatus, // <--- ใช้ข้อมูลสถานะที่รับมา (ที่รวม ป. และเลขที่แล้ว)
+            status: finalStatus,
             recoveryEmail: document.getElementById('recoveryEmail').value,
             phone: document.getElementById('phone').value
         };
@@ -342,13 +337,18 @@
                 confirmButtonColor: '#7f0101', 
                 iconColor: '#7f0101'
             });
-            form.reset(); 
-            // เคลียร์ค่าในป๊อปอัพด้วย
-            gradeDropdown.selectedIndex = 0;
-            studentNumberInput.value = '';
+            
+            // ล้างข้อมูลหน้าฟอร์มหลัก
+            if(form) form.reset(); 
+            
+            // ป้องกันเออเร่อ: เช็กก่อนว่ามีป๊อปอัพให้ล้างค่าไหม
+            if(gradeDropdown) gradeDropdown.selectedIndex = 0;
+            if(studentNumberInput) studentNumberInput.value = '';
         })
         .catch(error => {
-            Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', confirmButtonColor: '#7f0101' });
+            // โชว์ Error ใน Console 
+            console.error("เกิดข้อผิดพลาด:", error);
+            Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: 'กรุณาลองใหม่อีกครั้งค่ะ', confirmButtonColor: '#7f0101' });
         })
         .finally(() => { 
             btn.disabled = false; 
